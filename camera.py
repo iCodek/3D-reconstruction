@@ -50,16 +50,22 @@ class Camera:
             depth_colormap = cv2.cvtColor(depth_colormap, cv2.COLOR_BGR2RGB)
 
             if self.point:
+
                 points = self.pc.calculate(aligned_depth_frame)
                 self.pc.map_to(color_frame)
 
                 v, t = points.get_vertices(), points.get_texture_coordinates()
-                verts = np.asanyarray(v).view(np.float32).reshape(-1, 3)  # xyz
-                texcoords = np.asanyarray(t).view(np.float32).reshape(-1, 2)  # uv
+                verts = np.asarray(v).view(np.float32).reshape(-1, 3)  # xyz
+                verts = np.asarray(verts, dtype=np.float64)
+                texcoords = np.asarray(t).view(np.float32).reshape(-1, 2)  # uv
                 h, w = color_image.shape[:2]
                 v, u = (texcoords * (w, h) + 0.5).astype(np.uint32).T
+                im = (v >= 0) & (v < w)
+                jm = (u >= 0) & (u < h)
+                m = im & jm
                 color = color_image[u, v]
-                return color_image, depth_colormap, bg_removed, verts, color
+
+                return color_image, depth_colormap, bg_removed, verts[m], color[m], m
             else:
                 return color_image, depth_colormap, bg_removed, None, None
         raise Exception("相机获取图片失败")

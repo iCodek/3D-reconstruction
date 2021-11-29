@@ -6,10 +6,11 @@ import open3d as o3d
 trans_init = np.identity(4)
 
 
-def runICP(source, target):
+def runICP(source, target, current_transformation=None):
     threshold = 0.02
     print("Apply point-to-plane ICP")
-    current_transformation = trans_init
+    if current_transformation is None:
+        current_transformation = trans_init
     voxel_radius = [0.04, 0.02, 0.01]
     max_iter = [50, 30, 14]
     for scale in range(3):
@@ -34,6 +35,7 @@ def runICP(source, target):
         print(result_icp)
     draw_registration_result_original_color(source, target,
                                             result_icp.transformation)
+    return result_icp
 
 
 def draw_registration_result_original_color(source, target, transformation):

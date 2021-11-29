@@ -1,5 +1,5 @@
-from icpDemo import runICP
-from icpDemo import runICP
+from icpDemo import *
+from icpDemo import *
 
 
 def execute_global_registration(source_down, target_down, source_fpfh,

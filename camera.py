@@ -39,19 +39,19 @@ class Camera:
             if not aligned_depth_frame or not color_frame:
                 continue
 
-            depth_image = np.asanyarray(aligned_depth_frame.get_data())
+            #depth_image = np.asanyarray(aligned_depth_frame.get_data())
             color_image = np.asanyarray(color_frame.get_data())
 
-            grey_color = 153
-            depth_image_3d = np.dstack(
-                (depth_image, depth_image, depth_image))  # depth image is 1 channel, color is 3 channels
-            bg_removed = np.where((depth_image_3d > self.clipping_distance) | (depth_image_3d <= 0), grey_color,
-                                  color_image)
-
+            #grey_color = 153
+            #depth_image_3d = np.dstack(
+            #    (depth_image, depth_image, depth_image))  # depth image is 1 channel, color is 3 channels
+            #bg_removed = np.where((depth_image_3d > self.clipping_distance) | (depth_image_3d <= 0), grey_color,
+                                  #color_image)
+            bg_removed = None
             # Render images
-            depth_colormap = cv2.applyColorMap(cv2.convertScaleAbs(depth_image, alpha=0.03), cv2.COLORMAP_JET)
-            depth_colormap = cv2.cvtColor(depth_colormap, cv2.COLOR_BGR2RGB)
-
+            #depth_colormap = cv2.applyColorMap(cv2.convertScaleAbs(depth_image, alpha=0.03), cv2.COLORMAP_JET)
+            #depth_colormap = cv2.cvtColor(depth_colormap, cv2.COLOR_BGR2RGB)
+            depth_colormap = None
             if self.point:
 
                 points = self.pc.calculate(aligned_depth_frame)

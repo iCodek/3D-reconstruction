@@ -30,4 +30,4 @@ class ArucoFilter(ImageFilter):
 
 
 
-        return mask, centers, ids
+        return mask, centers, ids, corners

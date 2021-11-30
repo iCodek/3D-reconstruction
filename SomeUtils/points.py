@@ -61,11 +61,11 @@ def display_inlier_outlier(cloud, ind):
     #o3d.visualization.draw_geometries([inlier_cloud, outlier_cloud])
 
 class Point(object):
-    def __init__(self, x=0, y=0, z=0, id=0):
+    def __init__(self, x=0, y=0, z=0, id=0, index=0):
         self.x = x
         self.y = y
         self.z = z
-        self.id = id
+        self.id = index * 100 + id
 
     def toString(self):
         return "{0} x:{1:.1f},y:{2:.1f},z:{3:.1f}".format(self.id, self.x, self.y, self.z)

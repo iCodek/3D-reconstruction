@@ -23,7 +23,7 @@ if __name__ == '__main__':
         while True:
             _, colorImage, depthImage, removeBgImage, points, color, m = camera.getOneFrame()
 
-            dst, centers, ids = tf.process(colorImage)
+            dst, centers, ids, _= tf.process(colorImage)
             cv2.imshow("dst", dst)
             flat = (dst == 0xff).flatten()[m]
 

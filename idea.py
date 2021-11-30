@@ -22,6 +22,7 @@ if __name__ == '__main__':
     firstPoints = None
     firstPointCloud = None
     pointCloud = PointCloud()
+    times = 0
     try:
         pp2 = PointCloud()
         while True:
@@ -53,34 +54,40 @@ if __name__ == '__main__':
 
                     idSet = firstPoints.keys() & pointMap.keys()
 
-                    if len(idSet) >= 3:
-                        t = getTransMatrix([pointMap[k] for k in idSet], [firstPoints[k] for k in idSet])
-                        #print(t)
-                        # pp1 = PointCloud()
-                        # pts = np.array([[pointMap[k].x, pointMap[k].y, pointMap[k].z] for k in idSet])
-                        # pp1.points = Vector3dVector(pts)
-                        #
-                        # pp1.paint_uniform_color([0, 0, 1])
-                        #print(pp2)
-                        #pp1.transform(t)
-                        #draw_registration_result(pp1, pp2, None, twoColor=True)
-                        #draw_registration_result(pp1, firstPointCloud, None, twoColor=True)
-                        #o3d.io.write_point_cloud("firstPointCloud.pcd", firstPointCloud)
+                    if len(idSet) >= 5:
+                        t, L = getTransMatrix([pointMap[k] for k in idSet], [firstPoints[k] for k in idSet])
+                        print(L)
+                        if L < 3e-5:
 
-                        #o3d.io.write_point_cloud("pp2.pcd", PointCloud(pp2))
-                        #print("saving")
-                        #draw_registration_result(pp1, pp2 + firstPointCloud, t, twoColor=False)
-                        #draw_registration_result(pointCould, firstPointCloud, t, twoColor=False)
-                        pointCloud.transform(t)
-                        resultPv.showPointCloud(pointCloud, 0.005)
+
+                            #print(t)
+                            # pp1 = PointCloud()
+                            # pts = np.array([[pointMap[k].x, pointMap[k].y, pointMap[k].z] for k in idSet])
+                            # pp1.points = Vector3dVector(pts)
+                            #
+                            # pp1.paint_uniform_color([0, 0, 1])
+                            #print(pp2)
+                            #pp1.transform(t)
+
+                            #draw_registration_result(pp1, pp2, None, twoColor=True)
+                            #draw_registration_result(pp1, firstPointCloud, None, twoColor=True)
+                            #o3d.io.write_point_cloud("firstPointCloud.pcd", firstPointCloud)
+
+                            #o3d.io.write_point_cloud("pp2.pcd", PointCloud(pp2))
+                            #print("saving")
+                            #draw_registration_result(pp1, pp2 + firstPointCloud, t, twoColor=False)
+                            #draw_registration_result(pointCould, firstPointCloud, t, twoColor=False)
+                            pointCloud.transform(t)
+                            resultPv.showPointCloud(pointCloud, 0.003)
                 else:
-
-                    if len(pointMap) >= 3:
+                    if len(pointMap) >= 15:
+                        times += 1
+                    if len(pointMap) >= 15 and times > 5:
                         firstPoints = pointMap
                         firstPointCloud = PointCloud(pointCloud)
-                        pts2 = np.array([[firstPoints[k].x, firstPoints[k].y, firstPoints[k].z] for k in firstPoints])
-                        pp2.points = Vector3dVector(pts2)
-                        pp2.paint_uniform_color([1, 0, 0])
+                        # pts2 = np.array([[firstPoints[k].x, firstPoints[k].y, firstPoints[k].z] for k in firstPoints])
+                        # pp2.points = Vector3dVector(pts2)
+                        # pp2.paint_uniform_color([1, 0, 0])
                         #draw_registration_result(pp2, firstPointCloud, None, twoColor=True)
 
                         #draw_registration_result(pp2, pp2, None, twoColor=False)

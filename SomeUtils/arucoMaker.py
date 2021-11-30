@@ -9,5 +9,5 @@ dictionary = aruco.Dictionary_get(aruco.DICT_6X6_250)
 # 生成标记
 markerImage = np.zeros((400, 400), dtype=np.uint8)
 for i in range(20):
-    markerImage = aruco.drawMarker(dictionary, i, 300, markerImage, 1)
+    markerImage = aruco.drawMarker(dictionary, i, 150, markerImage, 1)
     cv2.imwrite("../marker" + str(i) + ".png", markerImage)

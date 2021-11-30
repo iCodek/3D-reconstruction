@@ -17,10 +17,17 @@ class ArucoFilter(ImageFilter):
         # 使用aruco.detectMarkers()函数可以检测到marker，返回ID和标志板的4个角点坐标
         corners, ids, rejectedImgPoints = aruco.detectMarkers(gray, aruco_dict, parameters=parameters)
 
-        mask = np.zeros(image.shape[:2])
+        mask = np.zeros(image.shape[:2], dtype=np.uint8)
+
+        centers = []
         if ids is not None:
+
             for corner in corners:
                 cv2.fillPoly(mask, np.int32(corner), color=255)
+                centers.append(np.array(corner.sum(axis=1) / 4, dtype=np.int))
         # 画出标志位置
         # aruco.drawDetectedDiamonds(mask, corners, ids, borderColor=255)
-        return mask
+
+
+
+        return mask, centers, ids

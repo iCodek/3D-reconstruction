@@ -7,12 +7,12 @@ trans_init = np.identity(4)
 
 
 def runICP(source, target, current_transformation=None):
-    threshold = 0.02
+
     print("Apply point-to-plane ICP")
     if current_transformation is None:
         current_transformation = trans_init
-    voxel_radius = [0.04, 0.02, 0.01]
-    max_iter = [50, 30, 14]
+    voxel_radius = [0.08, 0.04, 0.02]
+    max_iter = [30, 20, 10]
     for scale in range(3):
         iter = max_iter[scale]
         radius = voxel_radius[scale]

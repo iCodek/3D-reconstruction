@@ -13,14 +13,17 @@ class Camera:
         self.pc = rs.pointcloud()
         self.point = point
         config = rs.config()
-        config.enable_stream(rs.stream.depth, 640, 480, rs.format.z16, 30)
-        config.enable_stream(rs.stream.color, 640, 480, rs.format.bgr8, 30)
+        config.enable_stream(rs.stream.depth, 1280, 720, rs.format.z16, 30)
+        config.enable_stream(rs.stream.color, 960, 540, rs.format.bgr8, 30)
         profile = self.pipeline.start(config)
         depth_sensor = profile.get_device().first_depth_sensor()
         depth_scale = depth_sensor.get_depth_scale()
         self.clipping_distance = clipping_distance_in_meters / depth_scale
         self.align = rs.align(rs.stream.color)
-
+        depth_profile = rs.video_stream_profile(profile.get_stream(rs.stream.depth))
+        color_profile = rs.video_stream_profile(profile.get_stream(rs.stream.color))
+        self.depth_intrinsics = depth_profile.get_intrinsics()
+        self.color_intrinsics = color_profile.get_intrinsics()
     """"获取一副图片，深度图片，移除背景的图片"""
 
     def getOneFrame(self):
@@ -65,9 +68,9 @@ class Camera:
                 m = im & jm
                 color = color_image[u, v]
 
-                return color_image, depth_colormap, bg_removed, verts[m], color[m], m
+                return aligned_depth_frame, color_image, depth_colormap, bg_removed, verts[m], color[m], m
             else:
-                return color_image, depth_colormap, bg_removed, None, None
+                return aligned_depth_frame, color_image, depth_colormap, bg_removed, None, None, None
         raise Exception("相机获取图片失败")
 
     """关闭相机"""

@@ -1,6 +1,6 @@
 from icpDemo import *
 from globalicp import *
-
+from icpFunc import execute_color_registration
 
 def execute_global_registration(source_down, target_down, source_fpfh,
                                 target_fpfh, voxel_size):
